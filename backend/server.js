@@ -1,4 +1,5 @@
 const express = require('express');
+require('dotenv').config();
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const sqlite3 = require('sqlite3').verbose();
@@ -12,7 +13,9 @@ const PORT = 5000;
 
 // Security Middlewares
 app.use(helmet());
-app.use(cors());
+app.use(cors({
+    origin: ['http://localhost:5173', 'http://localhost:5174']
+}));
 app.use(bodyParser.json());
 
 const limiter = rateLimit({ windowMs: 15 * 60 * 1000, max: 100 });
@@ -66,7 +69,19 @@ const SYSTEM_PROMPT = `
 You are Synapse, an expert Senior JavaScript Engineer.
 - Goal: Refactor the user's code to be cleaner, more performant, and maintainable.
 - Tech Stack: Use modern JavaScript (ES6+) or TypeScript based on user preference.
-- Output: JSON object ONLY with keys: "explanation", "smell_detected", "refactored_code".
+- Metrics: Analyze the code's Cyclomatic Complexity and Maintainability.
+- Output: JSON object ONLY with keys: 
+  {
+    "explanation": string,
+    "smell_detected": string | null,
+    "refactored_code": string,
+    "metrics": {
+        "complexity_before": number (1-10),
+        "complexity_after": number (1-10),
+        "maintainability_rating": string ("A","B","C","D"),
+        "lines_saved": number
+    }
+  }
 `;
 
 app.post('/api/analyze', async (req, res) => {
@@ -81,7 +96,8 @@ app.post('/api/analyze', async (req, res) => {
         return res.json({
             explanation: `Syntax Error Detected: ${syntaxCheck.error}. Please fix syntax before refactoring.`,
             smell_detected: "Syntax Error",
-            refactored_code: code
+            refactored_code: code,
+            metrics: { complexity_before: 0, complexity_after: 0, maintainability_rating: "F", lines_saved: 0 }
         });
     }
 
@@ -92,11 +108,12 @@ app.post('/api/analyze', async (req, res) => {
             original_code: code,
             explanation: "",
             smell_detected: null,
-            refactored_code: ""
+            refactored_code: "",
+            metrics: { complexity_before: 5, complexity_after: 2, maintainability_rating: "A", lines_saved: 0 }
         };
 
         // 3. AI Processing (Gemini)
-        if (process.env.GEMINI_API_KEY) {
+        if (process.env.GEMINI_API_KEY && process.env.GEMINI_API_KEY !== 'YOUR_GEMINI_API_KEY_HERE') {
             const prompt = `${SYSTEM_PROMPT}
             User Preferences: ${JSON.stringify(preferences)}
             
@@ -131,23 +148,48 @@ app.post('/api/analyze', async (req, res) => {
                 response.refactored_code = isTS
                     ? `interface Item { price: number; }\n\nconst calculateTotal = (items: Item[]): number => {\n  return items.reduce((sum, item) => sum + item.price, 0);\n};`
                     : `const calculateTotal = (items) => {\n  return items.reduce((sum, item) => sum + item.price, 0);\n};`;
+
+                response.metrics = {
+                    complexity_before: 8,
+                    complexity_after: 2,
+                    maintainability_rating: "A",
+                    lines_saved: 3
+                };
             }
             // Pattern: God Object / Long Function (Heuristic by line count)
             else if (code.split('\n').length > 50) {
                 response.explanation = "Detected a large function/class. It's recommended to break this down into smaller, single-responsibility modules.";
                 response.smell_detected = "God Object / Monolith";
                 response.refactored_code = "// Suggested breakdown:\n// 1. Extract logic into helper functions...\n" + code;
+                response.metrics = {
+                    complexity_before: 15,
+                    complexity_after: 15, // Did not fully fix in demo mode
+                    maintainability_rating: "C",
+                    lines_saved: 0
+                };
             }
             // Pattern: Console Logs
             else if (code.includes('console.log')) {
                 response.explanation = "Removed debug statements for production readiness.";
                 response.smell_detected = "Debug Leftovers";
                 response.refactored_code = code.split('\n').filter(line => !line.includes('console.log')).join('\n');
+                response.metrics = {
+                    complexity_before: 2,
+                    complexity_after: 1,
+                    maintainability_rating: "A",
+                    lines_saved: 1
+                };
             }
             else {
                 response.explanation = "Code structure looks solid. Added JSDoc for better documentation.";
                 response.smell_detected = "Clean Code";
                 response.refactored_code = "/**\n * Optimized version\n */\n" + code;
+                response.metrics = {
+                    complexity_before: 1,
+                    complexity_after: 1,
+                    maintainability_rating: "A",
+                    lines_saved: 0
+                };
             }
         }
 
