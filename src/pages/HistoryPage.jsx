@@ -15,7 +15,7 @@ const HistoryPage = () => {
                 if (token) {
                     config.headers = { Authorization: `Bearer ${token}` };
                 }
-                const res = await axios.get('http://localhost:5000/api/history', config);
+                const res = await axios.get('https://synapse-ns5r.onrender.com/api/history', config);
                 setHistory(res.data);
             } catch (err) {
                 console.error(err);

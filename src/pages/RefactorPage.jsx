@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+const API_URL = 'https://synapse-ns5r.onrender.com';
 import CodeEditor from '../components/CodeEditor';
 import RefactorResult from '../components/RefactorResult';
 import RepoResult from '../components/RepoResult';
@@ -74,7 +75,7 @@ function calculateTotal(items) {
 
             if (isRepoUrl) {
                 // REPO ANALYSIS
-                const response = await axios.post('http://localhost:5000/api/repo/analyze', {
+                const response = await axios.post(`${API_URL}/api/repo/analyze`, {
                     repoUrl: targetUrl,
                     preferences
                 }, config);
@@ -82,7 +83,7 @@ function calculateTotal(items) {
                 setIsRepoMode(true);
             } else {
                 // SINGLE FILE ANALYSIS (URL or Raw Code)
-                const response = await axios.post('http://localhost:5000/api/analyze', {
+                const response = await axios.post(`${API_URL}/api/analyze`, {
                     code: payloadCode,
                     preferences,
                     refactorType,

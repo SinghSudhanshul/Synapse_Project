@@ -104,7 +104,7 @@ const DashboardPage = () => {
                 if (token) {
                     config.headers = { Authorization: `Bearer ${token}` };
                 }
-                const response = await fetch('http://localhost:5000/api/dashboard/stats', {
+                const response = await fetch('https://synapse-ns5r.onrender.com/api/dashboard/stats', {
                     headers: config.headers
                 });
 

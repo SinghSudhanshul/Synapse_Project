@@ -2,13 +2,10 @@ const express = require('express');
 const path = require('path');
 const dotenv = require('dotenv');
 
-// Try loading .env with debug
+// Load .env if available (local development)
 const envPath = path.resolve(__dirname, '.env');
 const result = dotenv.config({ path: envPath, debug: false });
-
-if (result.error) {
-    console.error("⚠️ dotenv error:", result.error);
-}
+// Ignore errors in production (env vars set via platform dashboard)
 
 const apiKey = process.env.OPENROUTER_API_KEY || process.env.GEMINI_API_KEY;
 const cors = require('cors');
