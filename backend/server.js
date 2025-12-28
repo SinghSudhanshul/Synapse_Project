@@ -73,6 +73,7 @@ app.post('/api/analyze', async (req, res) => {
             explanation: "",
             smell_detected: null,
             refactored_code: "",
+            analysis_type: "generative", // Default
             metrics: {
                 complexity_before: 0, complexity_after: 0,
                 time_complexity_before: "?", time_complexity_after: "?",
@@ -81,8 +82,18 @@ app.post('/api/analyze', async (req, res) => {
             }
         };
 
+        // 2. Hybrid Analysis Layer
+        // We attempt to parse with Babel. If it succeeds, we tag it as "Hybrid (Babel + AI)".
+        try {
+            const ast = parser.parse(code, { sourceType: "module", plugins: ["jsx", "typescript"] });
+            console.log("✅ Babel Static Analysis: Valid JavaScript/TypeScript AST detected.");
+            response.analysis_type = "hybrid";
+        } catch (e) {
+            console.log("⚠️ Babel Parsing Failed (Might be Python/Java/C++): Proceeding to AI.");
+            response.analysis_type = "generative";
+        }
+
         // 3. AI Processing (Gemini) - FORCED
-        // We assume the user has a key. If not, this might fail, but that's what the user requested.
         const apiKey = process.env.GEMINI_API_KEY;
 
         if (apiKey && apiKey !== 'YOUR_GEMINI_API_KEY_HERE') {

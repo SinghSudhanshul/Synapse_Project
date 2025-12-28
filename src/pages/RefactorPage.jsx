@@ -89,7 +89,7 @@ function calculateTotal(items) {
                 </div>
 
                 {/* Result Side */}
-                <div className="card-premium">
+                <div className="card-premium" style={{ display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
                     <div className="card-content">
                         <RefactorResult
                             data={result}

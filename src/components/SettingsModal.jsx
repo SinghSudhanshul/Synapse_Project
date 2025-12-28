@@ -1,9 +1,14 @@
-import React from 'react';
+import { useState, useEffect } from 'react';
 
 const SettingsModal = ({ isOpen, onClose, preferences, onSave }) => {
-    if (!isOpen) return null;
+    const [localPrefs, setLocalPrefs] = useState(preferences);
 
-    const [localPrefs, setLocalPrefs] = React.useState(preferences);
+    // Sync state when preferences prop changes
+    useEffect(() => {
+        setLocalPrefs(preferences);
+    }, [preferences]);
+
+    if (!isOpen) return null;
 
     const handleChange = (key, value) => {
         setLocalPrefs(prev => ({ ...prev, [key]: value }));
