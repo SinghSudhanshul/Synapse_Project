@@ -278,12 +278,12 @@ async function processWithSelfHealing(code, preferences, refactorType, retriesLe
 
 
     let result;
+    let aiData; // Declare outside try block so it's accessible in validation phase
     try {
         console.log("🤖 Calling OpenRouter API...");
         const text = await callOpenRouter(prompt);
         const jsonStr = text.replace(/```json/g, '').replace(/```/g, '').trim();
 
-        let aiData;
         try {
             aiData = JSON.parse(jsonStr);
         } catch (e) {
