@@ -1,21 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { User, GitCommit, AlertTriangle, CheckCircle } from 'lucide-react';
-
-const activities = [
-    { user: 'Alex M.', action: 'refactored', target: 'auth_service.js', time: '2m ago', type: 'success' },
-    { user: 'Sarah K.', action: 'detected', target: 'memory leak in data_pipeline.py', time: '5m ago', type: 'warning' },
-    { user: 'System', action: 'completed', target: 'nightly build analysis', time: '12m ago', type: 'info' },
-    { user: 'Mike R.', action: 'pushed', target: 'feature/new-login', time: '1h ago', type: 'commit' },
-    { user: 'Synapse AI', action: 'optimized', target: 'rendering logic (45% faster)', time: '2h ago', type: 'success' }
-];
+import { Code, AlertTriangle } from 'lucide-react';
+import axios from 'axios';
 
 const ActivityItem = ({ item }) => {
-    let Icon = User;
-    let color = 'var(--text-muted)';
+    let Icon = Code;
+    let color = '#10b981';
 
-    if (item.type === 'success') { Icon = CheckCircle; color = '#10b981'; }
     if (item.type === 'warning') { Icon = AlertTriangle; color = '#f59e0b'; }
-    if (item.type === 'commit') { Icon = GitCommit; color = '#6366f1'; }
 
     return (
         <div style={{
@@ -46,6 +37,52 @@ const ActivityItem = ({ item }) => {
 };
 
 const ActivityFeed = () => {
+    const [activities, setActivities] = useState([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        fetchActivity();
+    }, []);
+
+    const fetchActivity = async () => {
+        try {
+            const response = await axios.get('https://synapse-ns5r.onrender.com/api/history');
+
+            if (response.data && response.data.length > 0) {
+                const recentActivities = response.data.slice(0, 5).map(item => ({
+                    user: 'You',
+                    action: 'refactored',
+                    target: item.language ? `${item.language} code` : 'code',
+                    time: formatTime(item.timestamp || item.created_at),
+                    type: 'success'
+                }));
+                setActivities(recentActivities);
+            }
+        } catch (error) {
+            console.error('Failed to fetch activity:', error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const formatTime = (timestamp) => {
+        if (!timestamp) return 'recently';
+
+        const date = new Date(timestamp);
+        const now = new Date();
+        const diffMs = now - date;
+        const diffMins = Math.floor(diffMs / 60000);
+
+        if (diffMins < 1) return 'just now';
+        if (diffMins < 60) return `${diffMins}m ago`;
+
+        const diffHours = Math.floor(diffMins / 60);
+        if (diffHours < 24) return `${diffHours}h ago`;
+
+        const diffDays = Math.floor(diffHours / 24);
+        return `${diffDays}d ago`;
+    };
+
     return (
         <div className="card-premium">
             <div style={{
@@ -55,33 +92,58 @@ const ActivityFeed = () => {
                 justifyContent: 'space-between',
                 alignItems: 'center'
             }}>
-                <h3 style={{ fontSize: '1rem', fontWeight: 600, margin: 0 }}>Team Activity</h3>
-                <span className="live-indicator">
-                    <span className="dot"></span> Live
-                </span>
+                <h3 style={{ fontSize: '1rem', fontWeight: 600, margin: 0 }}>Recent Activity</h3>
+                {activities.length > 0 && (
+                    <span className="live-indicator">
+                        <span className="dot"></span> Live
+                    </span>
+                )}
             </div>
-            <div style={{ padding: '0 1.25rem' }}>
-                {activities.map((item, i) => (
-                    <ActivityItem key={i} item={item} />
-                ))}
+
+            <div style={{ padding: '0 1.25rem', minHeight: '200px' }}>
+                {loading ? (
+                    <div style={{ padding: '2rem', textAlign: 'center', color: 'var(--text-muted)' }}>
+                        Loading activity...
+                    </div>
+                ) : activities.length > 0 ? (
+                    activities.map((item, i) => (
+                        <ActivityItem key={i} item={item} />
+                    ))
+                ) : (
+                    <div style={{ padding: '3rem 1rem', textAlign: 'center' }}>
+                        <Code size={40} style={{ color: 'var(--text-muted)', margin: '0 auto 1rem', display: 'block' }} />
+                        <p style={{ color: 'var(--text-muted)', margin: 0, fontSize: '0.9rem' }}>
+                            No refactoring activity yet
+                        </p>
+                        <p style={{ color: 'var(--text-muted)', margin: '0.5rem 0 0', fontSize: '0.8rem' }}>
+                            Start analyzing code to see your activity here
+                        </p>
+                    </div>
+                )}
             </div>
-            <div style={{
-                padding: '1rem',
-                textAlign: 'center',
-                borderTop: '1px solid var(--border)',
-                marginTop: '0.5rem'
-            }}>
-                <button style={{
-                    background: 'none',
-                    border: 'none',
-                    color: '#818cf8',
-                    fontSize: '0.85rem',
-                    cursor: 'pointer',
-                    fontWeight: 500
+
+            {activities.length > 0 && (
+                <div style={{
+                    padding: '1rem',
+                    textAlign: 'center',
+                    borderTop: '1px solid var(--border)',
+                    marginTop: '0.5rem'
                 }}>
-                    View Full Log
-                </button>
-            </div>
+                    <button
+                        onClick={() => window.location.href = '/history'}
+                        style={{
+                            background: 'none',
+                            border: 'none',
+                            color: '#818cf8',
+                            fontSize: '0.85rem',
+                            cursor: 'pointer',
+                            fontWeight: 500
+                        }}
+                    >
+                        View Full History
+                    </button>
+                </div>
+            )}
         </div>
     );
 };
