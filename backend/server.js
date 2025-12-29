@@ -128,7 +128,7 @@ app.get('/api/dashboard/stats', optionalAuth, async (req, res) => {
 
             const recent = await RefactoringSession.findAll({
                 where: { user_id: req.user.id },
-                order: [['created_at', 'DESC']],
+                order: [['createdAt', 'DESC']],
                 limit: 5
             });
 
@@ -182,7 +182,7 @@ app.get('/api/history', optionalAuth, async (req, res) => {
         try {
             const sessions = await RefactoringSession.findAll({
                 where: { user_id: req.user.id },
-                order: [['created_at', 'DESC']],
+                order: [['createdAt', 'DESC']],
                 limit: 50
             });
 

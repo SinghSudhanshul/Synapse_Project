@@ -23,10 +23,15 @@ class RefactorPipeline {
         try {
             rawResponse = await aiClient.call(prompt);
         } catch (error) {
-            // Handle Simulation Mode / Fallback for ANY AI failure
-            console.warn("   ⚠️ AI API Failed:", error.message);
-            console.warn("   -> Falling back to Simulation Mode.");
-            return this.getSimulationResult(code, adapter);
+            // ONLY fallback to simulation if it's a transient API error
+            console.error("❌ AI Pipeline Error:", error.message);
+
+            if (error.message.includes('NO_API_KEY')) {
+                return this.getSimulationResult(code, adapter, "No API Key configured. Please add your key to enable AI.");
+            }
+
+            console.warn("   -> AI Overloaded or Failed. Falling back to High-Fidelity Simulation.");
+            return this.getSimulationResult(code, adapter, `AI Overloaded: ${error.message}. Showing simulated results.`);
         }
 
         // 5. Post Processing & Validation
