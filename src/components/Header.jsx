@@ -53,20 +53,16 @@ const Header = ({ onOpenSettings }) => {
       <div className="container flex justify-between items-center">
         <div className="logo flex items-center gap-4">
           <Link to={isAuthenticated ? "/dashboard" : "/"} style={{ display: 'flex', alignItems: 'center', gap: '1rem', textDecoration: 'none' }}>
-            <div style={{
-              width: '32px',
-              height: '32px',
-              background: 'linear-gradient(135deg, var(--primary), var(--secondary))',
-              borderRadius: '8px',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              boxShadow: '0 0 15px var(--primary-glow)'
-            }}>
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
-              </svg>
-            </div>
+            <img
+              src="/logo.png"
+              alt="Synapse Logo"
+              style={{
+                width: '40px',
+                height: '40px',
+                objectFit: 'contain',
+                filter: 'drop-shadow(0 0 10px rgba(99, 102, 241, 0.5))'
+              }}
+            />
             <h1 style={{
               fontSize: '1.5rem',
               margin: 0,
