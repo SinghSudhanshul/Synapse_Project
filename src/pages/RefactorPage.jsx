@@ -148,13 +148,13 @@ function UserData({ userId }) {
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', paddingBottom: '1rem', borderBottom: '1px solid var(--border)' }}>
                 <div>
                     <h2 style={{ fontSize: '2rem', fontWeight: 700, margin: 0, display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                        <span style={{
+                        <span className="page-title" style={{
                             background: 'linear-gradient(135deg, #fff 0%, #a5b4fc 100%)',
                             WebkitBackgroundClip: 'text',
                             WebkitTextFillColor: 'transparent',
                             filter: 'drop-shadow(0 0 20px rgba(99, 102, 241, 0.3))'
                         }}>
-                            Code Quality Assistant
+                            Code Refactor Assistant
                         </span>
                     </h2>
 
