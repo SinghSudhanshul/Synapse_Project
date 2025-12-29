@@ -13,7 +13,8 @@ class AIClient {
         if (openRouterKey && !openRouterKey.includes('YOUR_')) {
             const models = [
                 'google/gemini-2.0-flash-exp:free',
-                'meta-llama/llama-3-8b-instruct:free',
+                'meta-llama/llama-3.1-8b-instruct:free',
+                'meta-llama/llama-3.2-3b-instruct:free',
                 'mistralai/mistral-7b-instruct:free',
                 'google/gemini-pro-1.5-exp',
             ];
