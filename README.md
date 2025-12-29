@@ -5,14 +5,41 @@
 ![Synapse Banner](https://img.shields.io/badge/Synapse-Code%20Intelligence-6366f1?style=for-the-badge&logo=react)
 
 [![Live Demo](https://img.shields.io/badge/🌐_Live_Demo-Visit%20Now-10b981?style=for-the-badge)](https://synapserefactor.vercel.app/)
+[![VS Code Extension](https://img.shields.io/badge/📦_VS_Code-Install-blue?style=for-the-badge)](https://marketplace.visualstudio.com/items?itemName=synapseai.synapse-refactor)
 [![Backend API](https://img.shields.io/badge/🔌_API-Running-6366f1?style=for-the-badge)](https://synapse-ns5r.onrender.com)
 [![License](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)](LICENSE)
 
-**Transform messy code into production-ready masterpieces with  context-aware AI refactoring**
+**Transform messy code into production-ready masterpieces with context-aware AI refactoring**
 
-[Try Live Demo](https://synapserefactor.vercel.app/) • [API Docs](#api) • [Architecture](#architecture) • [Features](#features)
+[Try Live Demo](https://synapserefactor.vercel.app/) • [Install VS Code Extension](#vs-code-extension) • [API Docs](#api) • [Architecture](#architecture)
 
 </div>
+
+---
+
+## 🎉 **NEW: VS Code Extension Available!**
+
+Install Synapse directly in your editor:
+
+### **Option 1: VS Code Marketplace** (Verifying - Available Soon)
+```bash
+# Search "Synapse" in VS Code Extensions
+# OR visit: https://marketplace.visualstudio.com/items?itemName=synapseai.synapse-refactor
+```
+
+### **Option 2: Install from VSIX** (Available NOW)
+1. Download [synapse-refactor-0.1.0.vsix](./vscode-extension/synapse-refactor-0.1.0.vsix)
+2. In VS Code: `Ctrl+Shift+X` → `...` menu → "Install from VSIX..."
+3. Select the downloaded file
+4. **Use:** Select code → Press `Ctrl+Shift+R`
+
+**Features:**
+- ⚡ Instant refactoring (`Ctrl+Shift+R`)
+- 🔍 Real-time smell detection
+- 📊 Complexity metrics
+- 🎨 Side-by-side diff preview
+- ⚠️ Risk scoring
+- 🌐 Powered by the same API as our web app
 
 ---
 

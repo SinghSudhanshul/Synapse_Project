@@ -1,0 +1,55 @@
+{
+    "name": "synapse-refactor",
+    "displayName": "Synapse – AI Code Refactoring",
+    "description": "AI-powered code refactoring with context-aware suggestions and smell detection",
+    "version": "0.1.0",
+    "publisher": "synapseai",
+    "license": "MIT",
+    "engines": {
+        "vscode": "^1.80.0"
+    },
+    "categories": [
+        "Programming Languages",
+        "Formatters"
+    ],
+    "keywords": [
+        "refactor",
+        "ai",
+        "javascript",
+        "python"
+    ],
+    "activationEvents": [],
+    "main": "./extension.js",
+    "contributes": {
+        "commands": [
+            {
+                "command": "synapse.refactor",
+                "title": "Synapse: Refactor Code"
+            }
+        ],
+        "keybindings": [
+            {
+                "command": "synapse.refactor",
+                "key": "ctrl+shift+r",
+                "mac": "cmd+shift+r",
+                "when": "editorTextFocus"
+            }
+        ],
+        "configuration": {
+            "title": "Synapse",
+            "properties": {
+                "synapse.apiUrl": {
+                    "type": "string",
+                    "default": "https://synapse-ns5r.onrender.com"
+                }
+            }
+        }
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/ramanuj077/Synapse"
+    },
+    "dependencies": {
+        "axios": "^1.6.0"
+    }
+}
