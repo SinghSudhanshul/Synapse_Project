@@ -218,8 +218,9 @@ app.post('/api/set-key', (req, res) => {
     if (!apiKey || apiKey.length < 10) return res.status(400).json({ error: "Invalid Key" });
 
     process.env.GEMINI_API_KEY = apiKey;
+    process.env.OPENROUTER_API_KEY = apiKey;
     console.log("🔑 API Key updated dynamically to:", apiKey.substring(0, 5) + "...");
-    res.json({ success: true, message: "API Key Updated" });
+    res.json({ success: true, message: "API Key Updated (Gemini & OpenRouter)" });
 });
 
 app.listen(PORT, () => {
