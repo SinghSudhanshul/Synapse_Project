@@ -72,10 +72,11 @@ const LoginPage = () => {
                 backdropFilter: 'blur(24px)',
                 border: '1px solid rgba(255, 255, 255, 0.08)',
                 borderRadius: '24px',
-                padding: '3rem',
+                padding: '2rem 1.5rem',
                 boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)',
                 zIndex: 1,
-                position: 'relative'
+                position: 'relative',
+                boxSizing: 'border-box'
             }}>
                 {/* Logo */}
                 <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
