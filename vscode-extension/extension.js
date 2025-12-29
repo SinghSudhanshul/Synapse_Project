@@ -54,7 +54,7 @@ function activate(context) {
                     language: language,
                     refactorType: 'clean-code'
                 }, {
-                    timeout: 10000
+                    timeout: 30000
                 });
 
                 const result = response.data;
@@ -106,7 +106,7 @@ function activate(context) {
                     language: language,
                     refactorType: 'clean-code'
                 }, {
-                    timeout: 15000
+                    timeout: 30000
                 });
 
                 const result = response.data;
@@ -126,7 +126,7 @@ function activate(context) {
         });
     });
 
-    context.subscriptions.push(refactorSelection, refactorFile);
+    context.subscriptions.push(refactorCommand, refactorFile);
 }
 
 async function showRefactorResults(originalCode, result, editor, range) {

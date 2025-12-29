@@ -24,7 +24,11 @@
         "commands": [
             {
                 "command": "synapse.refactor",
-                "title": "Synapse: Refactor Code"
+                "title": "Synapse: Refactor Selection"
+            },
+            {
+                "command": "synapse.refactorFile",
+                "title": "Synapse: Refactor Entire File"
             }
         ],
         "keybindings": [
