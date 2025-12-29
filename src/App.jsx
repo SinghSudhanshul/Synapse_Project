@@ -6,6 +6,7 @@ import RefactorPage from './pages/RefactorPage'
 import HistoryPage from './pages/HistoryPage'
 import PatternsPage from './pages/PatternsPage'
 import DocsPage from './pages/DocsPage'
+import ExtensionPage from './pages/ExtensionPage'
 import LoginPage from './pages/LoginPage'
 import SignupPage from './pages/SignupPage'
 import DashboardPage from './pages/DashboardPage'
@@ -50,7 +51,7 @@ const AppContent = () => {
           {/* Public Routes */}
           <Route path="/" element={<RefactorPage preferences={preferences} />} />
           <Route path="/patterns" element={<PatternsPage />} />
-          <Route path="/docs" element={<DocsPage />} />
+          <Route path="/docs" element={<DocsPage />} />`n          <Route path="/extension" element={<ExtensionPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<SignupPage />} />
 
